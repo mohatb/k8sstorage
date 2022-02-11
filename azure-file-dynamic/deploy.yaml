@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx
+  name: dynamicazurefiledeploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+      name: deployment-azuredisk
+    spec:
+      containers:
+      - name: mypod
+        image: nginx
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        volumeMounts:
+        - mountPath: "/mnt/azurefiledynamic"
+          name: volume
+      volumes:
+        - name: volume
+          persistentVolumeClaim:
+            claimName: dynamic-azurefile-pvc

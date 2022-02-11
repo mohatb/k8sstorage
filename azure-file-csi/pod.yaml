@@ -1,0 +1,18 @@
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: nginx-azurefile-csi
+spec:
+  nodeSelector:
+    "kubernetes.io/os": linux
+  containers:
+    - image: nginx
+      name: nginx-azurefile
+      volumeMounts:
+        - name: volume
+          mountPath: "/mnt/azurefiledynamiccsi"
+  volumes:
+    - name: volume
+      persistentVolumeClaim:
+        claimName: dynamic-azurefilecsi-pvc
